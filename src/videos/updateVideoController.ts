@@ -1,11 +1,11 @@
+
 import { Response, Request } from 'express'
 
 import { db } from '../db/db'
-import { CreateVideoInputType, OutputErrorsType, OutputType, Resolutions } from './input-output-types'
-import { VideoDBType } from '../db/video-db-type'
+import { UpdateVideoInputType, OutputErrorsType, Resolutions, ParamType, OutputType } from './input-output-types'
 
 
-const inputValidation = (video: CreateVideoInputType) => {
+const inputValidation = (video: UpdateVideoInputType) => {
     const errors: OutputErrorsType = {
         errorsMessages: []
     }
@@ -36,29 +36,29 @@ const inputValidation = (video: CreateVideoInputType) => {
             message: 'Author maximum length exceeded!', field: 'author!'
         })
     }
+    if (video.minAgeRestriction && video.minAgeRestriction < 1 ||video.minAgeRestriction && video.minAgeRestriction > 18) {
+        errors.errorsMessages.push({
+            message: 'Invalid age restriction!', field: 'minAgeRestriction'
+        })
+    }
     return errors
 }
 
-export const createVideoController = (req: Request<any, OutputType, CreateVideoInputType, any>, res: Response<OutputType>) => {
+export const updateVideoController = (req: Request<ParamType, OutputType, UpdateVideoInputType, any>, res: Response<OutputType>) => {
     const errors = inputValidation(req.body)
-    if (errors.errorsMessages.length) { 
+    if (errors.errorsMessages.length) {
         res
             .status(400)
             .json(errors)
         return
     }
-
-    const newVideo: VideoDBType = {
-        ...req.body,
-        id: Date.now() + Math.random(),
-        canBeDownloaded: false,
-        minAgeRestriction: null,
-        createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+    let videoToUpdate = db.videos.find(p => p.id === +req.params.id)
+    if (!videoToUpdate) {
+        res.status(404).json({ errorsMessages: [{ message: 'Video not found', field: 'id' }] })
+        return
     }
-    db.videos = [...db.videos, newVideo]
+    db.videos = db.videos.map(video => video.id === +req.params.id ? { ...video, ...req.body } : video)
 
     res
-        .status(201)
-        .json(newVideo)
+        .status(204)
 }
