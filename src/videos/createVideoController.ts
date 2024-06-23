@@ -15,12 +15,12 @@ const inputValidation = (video: CreateVideoInputType) => {
             message: 'Please add valid resolution!', field: 'availableResolution'
         })
     }
-    if (!video.title) {
+    if (!video.title || typeof video.title !== 'string' || !video.title.trim()) {
         errors.errorsMessages.push({
             message: 'Title required!', field: 'title'
         })
     }
-    if (!video.author) {
+    if (!video.author || typeof video.author !== 'string' || !video.author.trim()) {
         errors.errorsMessages.push({
             message: 'Author required!', field: 'author'
         })
@@ -40,13 +40,12 @@ const inputValidation = (video: CreateVideoInputType) => {
 
 export const createVideoController = (req: Request<any, OutputType, CreateVideoInputType, any>, res: Response<OutputType>) => {
     const errors = inputValidation(req.body)
-    if (errors.errorsMessages.length) { 
+    if (errors.errorsMessages.length) {
         res
             .status(400)
             .json(errors)
         return
     }
-
     const newVideo: VideoDBType = {
         ...req.body,
         id: Date.now() + Math.random(),
@@ -56,7 +55,6 @@ export const createVideoController = (req: Request<any, OutputType, CreateVideoI
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
     }
     db.videos = [...db.videos, newVideo]
-
     res
         .status(201)
         .json(newVideo)

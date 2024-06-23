@@ -15,12 +15,12 @@ const inputValidation = (video: UpdateVideoInputType) => {
             message: 'Please add valid resolution!', field: 'availableResolution'
         })
     }
-    if (!video.title) {
+    if (!video.title || typeof video.title !== 'string' || !video.title.trim()) {
         errors.errorsMessages.push({
             message: 'Title required!', field: 'title'
         })
     }
-    if (!video.author) {
+    if (!video.author || typeof video.author !== 'string' || !video.author.trim()) {
         errors.errorsMessages.push({
             message: 'Author required!', field: 'author'
         })
@@ -44,6 +44,11 @@ const inputValidation = (video: UpdateVideoInputType) => {
 }
 
 export const updateVideoController = (req: Request<ParamType, OutputType, UpdateVideoInputType, any>, res: Response<OutputType>) => {
+    let videoToUpdate = db.videos.find(p => p.id === +req.params.id)
+    if (!videoToUpdate) {
+        res.status(404).json({ errorsMessages: [{ message: 'Video not found', field: 'id' }] })
+        return
+    }
     const errors = inputValidation(req.body)
     if (errors.errorsMessages.length) {
         res
@@ -51,17 +56,11 @@ export const updateVideoController = (req: Request<ParamType, OutputType, Update
             .json(errors)
         return
     }
-    let videoToUpdate = db.videos.find(p => p.id === +req.params.id)
-    if (!videoToUpdate) {
-        res.status(404).json({ errorsMessages: [{ message: 'Video not found', field: 'id' }] })
-        return
-    }
     videoToUpdate = {
         ...videoToUpdate,
         ...req.body
     }
     db.videos = db.videos.map(video => video.id === +req.params.id ? videoToUpdate : video)
-
     res
         .status(204)
 }
