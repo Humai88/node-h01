@@ -9,27 +9,27 @@ export const createInputValidation = (video: CreateVideoInputType): OutputErrors
       || video.availableResolutions.find(p => !Resolutions[p]) || video.availableResolutions.length < 1
   ) {
       errors.errorsMessages.push({
-          message: 'Please add valid resolution!', field: 'availableResolution'
+          message: 'Please add valid resolution!', field: 'availableResolutions'
       })
   }
-  if (!video.title || typeof video.title !== 'string' || !video.title.trim()) {
+  if (!video.title || typeof video.title !== 'string') {
       errors.errorsMessages.push({
           message: 'Title required!', field: 'title'
       })
   }
-  if (!video.author || typeof video.author !== 'string' || !video.author.trim()) {
+  if (!video.author || typeof video.author !== 'string') {
       errors.errorsMessages.push({
           message: 'Author required!', field: 'author'
       })
   }
-  if (video.title.trim().length > 40) {
+  if (typeof video.title == 'string' && video.title.trim().length > 40) {
       errors.errorsMessages.push({
           message: 'Title maximum length exceeded!', field: 'title'
       })
   }
-  if (video.author.trim().length > 20) {
+  if (typeof video.author == 'string' && video.author.trim().length > 20) {
       errors.errorsMessages.push({
-          message: 'Author maximum length exceeded!', field: 'author!'
+          message: 'Author maximum length exceeded!', field: 'author'
       })
   }
   return errors

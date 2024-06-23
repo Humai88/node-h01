@@ -22,7 +22,7 @@ describe('createInputValidation', () => {
     };
     const result = createInputValidation(video);
     expect(result.errorsMessages).toContainEqual({
-      message: 'Please add valid resolution!', field: 'availableResolution'
+      message: 'Please add valid resolution!', field: 'availableResolutions'
     });
   });
 
@@ -70,7 +70,7 @@ describe('createInputValidation', () => {
     };
     const result = createInputValidation(video);
     expect(result.errorsMessages).toContainEqual({
-      message: 'Author maximum length exceeded!', field: 'author!'
+      message: 'Author maximum length exceeded!', field: 'author'
     });
   });
 });
@@ -103,7 +103,7 @@ describe('updateInputValidation', () => {
     };
     const result = createInputValidation(video);
     expect(result.errorsMessages).toContainEqual({
-      message: 'Please add valid resolution!', field: 'availableResolution'
+      message: 'Please add valid resolution!', field: 'availableResolutions'
     });
   });
 
@@ -163,7 +163,7 @@ describe('updateInputValidation', () => {
     };
     const result = createInputValidation(video);
     expect(result.errorsMessages).toContainEqual({
-      message: 'Author maximum length exceeded!', field: 'author!'
+      message: 'Author maximum length exceeded!', field: 'author'
     });
   });
 

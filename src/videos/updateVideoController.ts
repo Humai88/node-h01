@@ -24,5 +24,5 @@ export const updateVideoController = (req: Request<ParamType, OutputType, Update
     }
     db.videos = db.videos.map(video => video.id === +req.params.id ? videoToUpdate : video)
     res
-        .status(204)
+        .sendStatus(204)
 }

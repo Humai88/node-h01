@@ -11,6 +11,6 @@ const deleteVideoController = (req, res) => {
     }
     db_1.db.videos = db_1.db.videos.filter(video => video.id !== +videoId);
     res
-        .status(204);
+        .sendStatus(204);
 };
 exports.deleteVideoController = deleteVideoController;

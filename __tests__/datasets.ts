@@ -15,8 +15,8 @@ export const video1: VideoDBType = {
 
 export const video2: VideoDBType = {
     id: 2, 
-    title: 'Video 2', 
-    author: 'Test Author 2',
+    title: "Video 2", 
+    author: "Test Author 2",
     canBeDownloaded: true,
     minAgeRestriction: null,
     createdAt: "2024-06-23T09:58:41.772Z",
