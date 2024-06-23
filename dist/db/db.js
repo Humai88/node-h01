@@ -6,7 +6,7 @@ exports.db = {
 };
 // функция для быстрой очистки/заполнения базы данных для тестов
 const setDB = (dataset) => {
-    if (!dataset) { // если в функцию ничего не передано - то очищаем базу данных
+    if (!dataset) {
         exports.db.videos = [];
         return;
     }

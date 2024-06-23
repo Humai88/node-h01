@@ -11,7 +11,7 @@ export const db: DBType = {
 
 // функция для быстрой очистки/заполнения базы данных для тестов
 export const setDB = (dataset?: Partial<DBType>) => {
-  if (!dataset) { // если в функцию ничего не передано - то очищаем базу данных
+  if (!dataset) { 
       db.videos = []
       return
   }

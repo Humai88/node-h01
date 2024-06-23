@@ -4,61 +4,37 @@ import { setDB } from '../../src/db/db'
 import { dataset1 } from '../datasets'
 import { CreateVideoInputType } from '../../src/videos/input-output-types'
  
-describe('/videos', () => {
-    beforeAll(async () => { // очистка базы данных перед началом тестирования
+describe('GET /videos controller tests', () => {
+    beforeEach(() => {
         setDB()
     })
- 
-    it('should get empty array', async () => {
-         setDB() // очистка базы данных если нужно
- 
-        const res = await req
-            .get(SETTINGS.PATH.VIDEOS)
-            .expect(200) // проверяем наличие эндпоинта
- 
-        console.log(res.body) // можно посмотреть ответ эндпоинта
- 
-         expect(res.body.length).toBe(0) // проверяем ответ эндпоинта
-    })
-    it('should get not empty array', async () => {
-         setDB(dataset1) 
- 
-        const res = await req
-            .get(SETTINGS.PATH.VIDEOS)
-            .expect(200)
- 
-        console.log(res.body)
- 
-        expect(res.body.length).toBe(1)
-        expect(res.body[0]).toEqual(dataset1.videos[0])
+
+    it('should return an empty array when the database is empty', async () => {
+        const response = await req.get('/videos')
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual([])
     })
 
-       it('should create', async () => {
-        setDB()
-        const newVideo:CreateVideoInputType = {
-            title: 't1',
-            author: 'a1',
-            availableResolutions: ['P144']
-
-        }
-    
-        const res = await req
-            .post(SETTINGS.PATH.VIDEOS)
-            .send(newVideo) // отправка данных
-            .expect(201)
-    
-        console.log(res.body)
-    
-        expect(res.body.availableResolution).toEqual(newVideo.availableResolutions)
+    it('should return a non-empty array when the database is not empty', async () => {
+        setDB(dataset1) 
+        const response = await req.get('/videos')
+        expect(response.status).toBe(200)
+        expect(response.body.length).toBe(3)
+        expect(response.body[0]).toEqual(dataset1.videos[0])
     })
- 
-    it('shouldn\'t find', async () => {
+
+    it('should return a video by id', async () => {
         setDB(dataset1)
-    
-        const res = await req
-            .get(SETTINGS.PATH.VIDEOS + '/1')
-            .expect(404) // проверка на ошибку
-    
-        console.log(res.body)
+        const response = await req.get('/videos/2')
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(dataset1.videos[1])
     })
+
+    it('should return 404 if video not found', async () => {
+        setDB(dataset1)
+        const response = await req.get('/videos/4')
+        expect(response.status).toBe(404)
+        expect(response.body).toEqual({ errorsMessages: [{ message: 'Video not found', field: 'id' }] })
+    })
+
 })
