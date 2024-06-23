@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findVideoController = void 0;
 const db_1 = require("../db/db");
 const findVideoController = (req, res) => {
-    const videos = db_1.db.videos; // получаем видео из базы данных
-    res
-        .status(200)
-        .json(videos); // отдаём видео в качестве ответа
+    const video = db_1.db.videos.find(video => video.id === +req.params.id);
+    if (video) {
+        res.status(200).json(video);
+    }
+    else {
+        res.status(404).json({ errorsMessages: [{ message: 'Video not found', field: 'id' }] });
+    }
 };
 exports.findVideoController = findVideoController;
-// не забудьте добавить эндпоинт в апп

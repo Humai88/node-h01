@@ -7,25 +7,43 @@ const inputValidation = (video) => {
     const errors = {
         errorsMessages: []
     };
-    // ...
     if (!Array.isArray(video.availableResolutions)
-        || video.availableResolutions.find(p => !input_output_types_1.Resolutions[p])) {
+        || video.availableResolutions.find(p => !input_output_types_1.Resolutions[p]) || video.availableResolutions.length < 1) {
         errors.errorsMessages.push({
-            message: 'error!!!!', field: 'availableResolution'
+            message: 'Please add valid resolution!', field: 'availableResolution'
+        });
+    }
+    if (!video.title) {
+        errors.errorsMessages.push({
+            message: 'Title required!', field: 'title'
+        });
+    }
+    if (!video.author) {
+        errors.errorsMessages.push({
+            message: 'Author required!', field: 'author'
+        });
+    }
+    if (video.title.trim().length > 40) {
+        errors.errorsMessages.push({
+            message: 'Title maximum length exceeded!', field: 'title'
+        });
+    }
+    if (video.author.trim().length > 20) {
+        errors.errorsMessages.push({
+            message: 'Author maximum length exceeded!', field: 'author!'
         });
     }
     return errors;
 };
 const createVideoController = (req, res) => {
     const errors = inputValidation(req.body);
-    if (errors.errorsMessages.length) { // если есть ошибки - отправляем ошибки
+    if (errors.errorsMessages.length) {
         res
             .status(400)
             .json(errors);
         return;
     }
-    // если всё ок - добавляем видео
-    const newVideo = Object.assign(Object.assign({}, req.body), { id: Date.now() + Math.random() });
+    const newVideo = Object.assign(Object.assign({}, req.body), { id: Date.now() + Math.random(), canBeDownloaded: false, minAgeRestriction: null, createdAt: new Date().toISOString(), publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString() });
     db_1.db.videos = [...db_1.db.videos, newVideo];
     res
         .status(201)

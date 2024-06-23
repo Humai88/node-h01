@@ -13,5 +13,3 @@ videosRouter.get('/:id', findVideoController)
 videosRouter.delete('/:id', deleteVideoController)
 videosRouter.put('/:id', updateVideoController)
 
- 
-// не забудьте добавить роут в апп

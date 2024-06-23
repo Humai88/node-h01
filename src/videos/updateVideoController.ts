@@ -1,6 +1,5 @@
 
 import { Response, Request } from 'express'
-
 import { db } from '../db/db'
 import { UpdateVideoInputType, OutputErrorsType, Resolutions, ParamType, OutputType } from './input-output-types'
 
@@ -10,7 +9,7 @@ const inputValidation = (video: UpdateVideoInputType) => {
         errorsMessages: []
     }
     if (!Array.isArray(video.availableResolutions)
-        || video.availableResolutions.find(p => !Resolutions[p])
+        || video.availableResolutions.find(p => !Resolutions[p]) || video.availableResolutions.length < 1
     ) {
         errors.errorsMessages.push({
             message: 'Please add valid resolution!', field: 'availableResolution'
@@ -36,7 +35,7 @@ const inputValidation = (video: UpdateVideoInputType) => {
             message: 'Author maximum length exceeded!', field: 'author!'
         })
     }
-    if (video.minAgeRestriction && video.minAgeRestriction < 1 ||video.minAgeRestriction && video.minAgeRestriction > 18) {
+    if (video.minAgeRestriction && video.minAgeRestriction < 1 || video.minAgeRestriction && video.minAgeRestriction > 18) {
         errors.errorsMessages.push({
             message: 'Invalid age restriction!', field: 'minAgeRestriction'
         })
@@ -57,7 +56,11 @@ export const updateVideoController = (req: Request<ParamType, OutputType, Update
         res.status(404).json({ errorsMessages: [{ message: 'Video not found', field: 'id' }] })
         return
     }
-    db.videos = db.videos.map(video => video.id === +req.params.id ? { ...video, ...req.body } : video)
+    videoToUpdate = {
+        ...videoToUpdate,
+        ...req.body
+    }
+    db.videos = db.videos.map(video => video.id === +req.params.id ? videoToUpdate : video)
 
     res
         .status(204)

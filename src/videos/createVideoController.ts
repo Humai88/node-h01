@@ -1,5 +1,4 @@
 import { Response, Request } from 'express'
-
 import { db } from '../db/db'
 import { CreateVideoInputType, OutputErrorsType, OutputType, Resolutions } from './input-output-types'
 import { VideoDBType } from '../db/video-db-type'
@@ -10,7 +9,7 @@ const inputValidation = (video: CreateVideoInputType) => {
         errorsMessages: []
     }
     if (!Array.isArray(video.availableResolutions)
-        || video.availableResolutions.find(p => !Resolutions[p])
+        || video.availableResolutions.find(p => !Resolutions[p]) || video.availableResolutions.length < 1
     ) {
         errors.errorsMessages.push({
             message: 'Please add valid resolution!', field: 'availableResolution'
@@ -54,7 +53,7 @@ export const createVideoController = (req: Request<any, OutputType, CreateVideoI
         canBeDownloaded: false,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
     }
     db.videos = [...db.videos, newVideo]
 

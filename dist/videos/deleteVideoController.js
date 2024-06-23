@@ -3,10 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVideoController = void 0;
 const db_1 = require("../db/db");
 const deleteVideoController = (req, res) => {
-    const videos = db_1.db.videos; // получаем видео из базы данных
+    const videoId = req.params.id;
+    const video = db_1.db.videos.find(video => video.id === +req.params.id);
+    if (!video) {
+        res.status(404).json({ errorsMessages: [{ message: 'Video not found', field: 'id' }] });
+        return;
+    }
+    db_1.db.videos = db_1.db.videos.filter(video => video.id !== +videoId);
     res
-        .status(200)
-        .json(videos); // отдаём видео в качестве ответа
+        .status(204);
 };
 exports.deleteVideoController = deleteVideoController;
-// не забудьте добавить эндпоинт в апп

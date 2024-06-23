@@ -1,4 +1,4 @@
-import { Resolutions } from "../videos/input-output-types"
+import { Resolutions, ResolutionString } from "../videos/input-output-types"
 
 export interface VideoDBType {
     id: number
@@ -8,6 +8,6 @@ export interface VideoDBType {
     minAgeRestriction: number | null
     createdAt: string
     publicationDate: string
-    availableResolutions: Resolutions[] | null
+    availableResolutions: ResolutionString[]
 }
 

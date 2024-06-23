@@ -6,10 +6,10 @@ const getVideosController_1 = require("./getVideosController");
 const createVideoController_1 = require("./createVideoController");
 const deleteVideoController_1 = require("./deleteVideoController");
 const findVideoController_1 = require("./findVideoController");
+const updateVideoController_1 = require("./updateVideoController");
 exports.videosRouter = (0, express_1.Router)();
 exports.videosRouter.get('/', getVideosController_1.getVideosController);
 exports.videosRouter.post('/', createVideoController_1.createVideoController);
 exports.videosRouter.get('/:id', findVideoController_1.findVideoController);
 exports.videosRouter.delete('/:id', deleteVideoController_1.deleteVideoController);
-// ...
-// не забудьте добавить роут в апп
+exports.videosRouter.put('/:id', updateVideoController_1.updateVideoController);
