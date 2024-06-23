@@ -40,6 +40,22 @@ const inputValidation = (video: UpdateVideoInputType) => {
             message: 'Invalid age restriction!', field: 'minAgeRestriction'
         })
     }
+    if (typeof video.canBeDownloaded  !== 'boolean' ) {
+        errors.errorsMessages.push({
+            message: 'CanBeDownloaded option should have boolean value!', field: 'canBeDownloaded'
+        })
+    }
+    if (typeof video.minAgeRestriction  !== 'number' ) {
+        errors.errorsMessages.push({
+            message: 'Age restriction should be a number!', field: 'minAgeRestriction'
+        })
+    }
+    const isoDateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(([+-]\d{2}:\d{2})|Z)?$/;
+    if (!isoDateTimeRegex.test(video.publicationDate) || typeof video.publicationDate !== 'string') {
+        errors.errorsMessages.push({
+            message: 'Publication date should be in ISO format!', field: 'publicationDate'
+        })
+    }
     return errors
 }
 
