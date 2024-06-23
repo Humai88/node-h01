@@ -13,6 +13,7 @@ export const updateVideoController = (req: Request<ParamType, OutputType, Update
     }
     const errors = updateInputValidation(req.body)
     if (errors.errorsMessages.length) {
+        errors.errorsMessages = errors.errorsMessages.filter((el, index) => index === 0)
         res
             .status(400)
             .json(errors)

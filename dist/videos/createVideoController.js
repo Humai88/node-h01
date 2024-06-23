@@ -6,6 +6,7 @@ const input_validation_1 = require("../validation/input-validation");
 const createVideoController = (req, res) => {
     const errors = (0, input_validation_1.createInputValidation)(req.body);
     if (errors.errorsMessages.length) {
+        errors.errorsMessages = errors.errorsMessages.filter((el, index) => index === 0);
         res
             .status(400)
             .json(errors);
