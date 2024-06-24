@@ -6,5 +6,3 @@ app.listen(SETTINGS.PORT, () => {
     console.log('...server started in port ' + SETTINGS.PORT)
 })
 
-
-// ssh -R 80:localhost:3003 serveo.net
