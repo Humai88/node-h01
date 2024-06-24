@@ -1,5 +1,8 @@
-import { OutputErrorsType, Resolutions } from "../videos/input-output-types"
-import { UpdateVideoInputType, CreateVideoInputType } from './../videos/input-output-types';
+import { Resolutions } from "../db/video-db-type"
+import { OutputErrorsType } from "../models/ErrorsModel"
+import { CreateVideoInputType, UpdateVideoInputType } from "../models/InputVideoModel"
+
+
 
 export const createInputValidation = (video: CreateVideoInputType): OutputErrorsType => {
   const errors: OutputErrorsType = {

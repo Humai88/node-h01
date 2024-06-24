@@ -1,9 +1,9 @@
 import { Response, Request } from 'express'
 import { db } from '../db/db'
-import { CreateVideoInputType, OutputType } from './input-output-types'
 import { VideoDBType } from '../db/video-db-type'
 import { createInputValidation } from '../validation/input-validation'
-
+import {OutputType } from '../models/OutputVideoModel'
+import { CreateVideoInputType } from '../models/InputVideoModel'
 
 export const createVideoController = (req: Request<any, OutputType, CreateVideoInputType, any>, res: Response<OutputType>) => {
     const errors = createInputValidation(req.body)

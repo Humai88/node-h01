@@ -1,9 +1,9 @@
 
 import { Response, Request } from 'express'
 import { db } from '../db/db'
-import { UpdateVideoInputType, ParamType, OutputType } from './input-output-types'
 import { updateInputValidation } from '../validation/input-validation'
-
+import { OutputType } from '../models/OutputVideoModel'
+import { ParamType, UpdateVideoInputType } from '../models/InputVideoModel'
 
 export const updateVideoController = (req: Request<ParamType, OutputType, UpdateVideoInputType, any>, res: Response<OutputType>) => {
     let videoToUpdate = db.videos.find(p => p.id === +req.params.id)

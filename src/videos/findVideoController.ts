@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { db } from '../db/db'
-import { OutputType, ParamType } from './input-output-types'
+import { OutputType } from '../models/OutputVideoModel'
+import { ParamType } from '../models/InputVideoModel'
 
 export const findVideoController = (req: Request<ParamType, OutputType>, res: Response<OutputType>) => {
     const video = db.videos.find(video => video.id === +req.params.id)

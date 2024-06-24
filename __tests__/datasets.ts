@@ -1,6 +1,5 @@
 import { DBType } from '../src/db/db'
-import { VideoDBType } from '../src/db/video-db-type'
-import { Resolutions } from '../src/videos/input-output-types'
+import { Resolutions, VideoDBType } from '../src/db/video-db-type'
 
 export const video1: VideoDBType = {
     id: 1, 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { db } from '../db/db'
-import { OutputVideoType } from './input-output-types'
+import { OutputVideoType } from '../models/OutputVideoModel'
 
 export const getVideosController = (req: Request, res: Response<OutputVideoType[]>) => {
     const videos = db.videos

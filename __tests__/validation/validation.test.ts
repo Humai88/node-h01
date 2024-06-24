@@ -1,5 +1,5 @@
 
-import { CreateVideoInputType, UpdateVideoInputType } from '../../src/videos/input-output-types';
+import { CreateVideoInputType, UpdateVideoInputType } from '../../src/models/InputVideoModel';
 import { createInputValidation, updateInputValidation } from '../../src/validation/input-validation';
 
 describe('createInputValidation', () => {

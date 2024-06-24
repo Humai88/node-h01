@@ -25,18 +25,16 @@ describe('GET /videos controller tests', () => {
 
 describe('GET /videos/:id controller tests', () => {
     beforeEach(() => {
-        setDB()
+        setDB(dataset1)
     })
 
     it('should return a video by id', async () => {
-        setDB(dataset1)
         const response = await req.get('/videos/2')
         expect(response.status).toBe(200)
         expect(response.body).toEqual(dataset1.videos[1])
     })
 
     it('should return 404 if video not found', async () => {
-        setDB(dataset1)
         const response = await req.get('/videos/4')
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ errorsMessages: [{ message: 'Video not found', field: 'id' }] })
@@ -108,18 +106,16 @@ describe('POST /videos createVideoController tests', () => {
 
 describe('PUT /videos/:id controller tests', () => {
     beforeEach(() => {
-        setDB()
+        setDB(dataset1)
     })
 
     it('should return 404 if video not found', async () => {
-        setDB(dataset1)
         const response = await req.put('/videos/999').send({ title: 'Updated Title' })
         expect(response.status).toBe(404)
         expect(response.body).toEqual({ errorsMessages: [{ message: 'Video not found', field: 'id' }] })
     })
 
     it('should return 400 with error messages for invalid title', async () => {
-        setDB(dataset1)
         const invalidInput = {
             title: 3,
             author: 'Test Author 3',
@@ -135,7 +131,6 @@ describe('PUT /videos/:id controller tests', () => {
     })
 
     it('should return 400 with error messages for invalid author', async () => {
-        setDB(dataset1)
         const invalidInput = {
             title: "Test title",
             author: "Very very very very looooooong name",
@@ -151,7 +146,6 @@ describe('PUT /videos/:id controller tests', () => {
     })
 
     it('should successfully update a video with valid input', async () => {
-        setDB(dataset1)
         const validInput = {
             title: "New title",
             author: "New name",
@@ -175,11 +169,10 @@ describe('PUT /videos/:id controller tests', () => {
 
 describe('DELETE /videos/:id controller tests', () => {
     beforeEach(() => {
-        setDB()
+        setDB(dataset1)
     })
 
     it('should successfully delete an existing video', async () => {
-        setDB(dataset1)
         const videoIdToDelete = dataset1.videos[0].id
         const deleteResponse = await req.delete(`/videos/${videoIdToDelete}`)
         expect(deleteResponse.status).toBe(204)
@@ -196,10 +189,9 @@ describe('DELETE /videos/:id controller tests', () => {
     })
 
     it('should ensure the video is deleted from the database', async () => {
-        setDB(dataset1)
         const videoIdToDelete = dataset1.videos[0].id
         await req.delete(`/videos/${videoIdToDelete}`)
-
+        
         const getResponse = await req.get('/videos')
         expect(getResponse.body).not.toContainEqual(expect.objectContaining({ id: videoIdToDelete }))
     })

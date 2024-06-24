@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { db } from '../db/db'
-import { OutputErrorsType, ParamType } from './input-output-types'
+import { OutputErrorsType } from '../models/ErrorsModel'
+import { ParamType } from '../models/InputVideoModel'
 
 export const deleteVideoController = (req: Request<ParamType>, res: Response<any | OutputErrorsType>) => {
     const videoId = req.params.id
