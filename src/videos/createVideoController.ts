@@ -8,7 +8,6 @@ import { CreateVideoInputType } from '../models/InputVideoModel'
 export const createVideoController = (req: Request<any, OutputType, CreateVideoInputType, any>, res: Response<OutputType>) => {
     const errors = createInputValidation(req.body)
     if (errors.errorsMessages.length) {
-        errors.errorsMessages = errors.errorsMessages.filter((el, index) => index === 0)
         res
             .status(400)
             .json(errors)
